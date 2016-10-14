@@ -4,6 +4,7 @@ require '../config.php';
 
 $config = ['settings' => [
     'addContentLengthHeader' => false,
+//    'displayErrorDetails' => true,
 ]];
 
 $app = new \Slim\App($config);
@@ -12,10 +13,15 @@ $container = $app->getContainer();
 $container['logger'] = function($c) {
     return \Twbot\Factory::getLogger('post');
 };
+$container['errorHandler'] = function ($c) {
+    return \Twbot\Factory::getDefaultErrorHandler();
+};
 
 // - - -
 
 $app->get('/', function ($request, $response, $args) {
+    $this->logger->addInfo("Poster Home");
+
     return $response->write("Post Job!");
 });
 

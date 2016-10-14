@@ -10,6 +10,7 @@ namespace Twbot;
 
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Twbot\Entity\Account;
@@ -44,13 +45,27 @@ class Factory
     }
 
     /**
+     * @return Logger
+     */
+    public static function getDefaultErrorHandler()
+    {
+        $logger = self::getLogger('default');
+
+        return new Error($logger);
+    }
+
+    /**
      * @param string $logName
      * @return Logger
      */
-    public static function getLogger($logName = 'main')
+    public static function getLogger($logName)
     {
-        $logger = new Logger('post');
-        $logger->pushHandler(new RotatingFileHandler(LOG_DIR . "$logName.log"));
+        $logger = new Logger($logName);
+
+        $handler = new RotatingFileHandler(LOG_DIR . "$logName.log");
+        $handler->setFormatter(new JsonFormatter());
+
+        $logger->pushHandler($handler);
 
         return $logger;
     }
