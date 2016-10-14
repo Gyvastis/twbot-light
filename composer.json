@@ -3,7 +3,8 @@
         "slim/slim": "^3.0",
         "symfony/yaml": "^3.1",
         "abraham/twitteroauth": "^0.6.6",
-        "monolog/monolog": "^1.21"
+        "monolog/monolog": "^1.21",
+        "symfony/property-access": "^3.1"
     },
     "autoload": {
         "psr-4": {"Twbot\\": "src/Twbot/"}

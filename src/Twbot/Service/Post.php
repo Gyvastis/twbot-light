@@ -27,11 +27,16 @@ class Post
     /**
      * Post constructor.
      * @param TwitterOAuth $twitter
+     * @param Account $account
+     * @param Message $message
      */
-    public function __construct(TwitterOAuth $twitter)
+    public function __construct(TwitterOAuth $twitter, Account $account, Message $message)
     {
         $this->twitter = $twitter;
+        $this->account = $account;
+        $this->message = $message;
     }
+
 
     public function send()
     {

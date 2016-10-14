@@ -16,6 +16,8 @@ $container['logger'] = function($c) {
     return $logger;
 };
 
+// - - -
+
 $app->get('/', function ($request, $response, $args) {
     return $response->write("Post Job!");
 });
@@ -23,10 +25,16 @@ $app->get('/', function ($request, $response, $args) {
 $app->get('/{username}', function ($request, $response, $args) {
     $username = $request->getAttribute('username');
 
-    /**
-     * @var \Monolog\Logger $this->logger
-     */
-    $this->logger->addInfo("Something interesting happened");
+    $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
+    $twitter = \Twbot\Factory::getTwitterOAuth($account);
+
+    $message = new \Twbot\Entity\Message();
+    $message->setMessage('Test first message');
+
+    $post = new \Twbot\Service\Post($twitter, $account, $message);
+    $post->send();
+
+    $this->logger->addInfo("Poster");
 
     return $response->write("Posted to: $username");
 });

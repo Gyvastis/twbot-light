@@ -32,7 +32,7 @@ class Account
     /**
      * @var string
      */
-    protected $accountSecret;
+    protected $accessSecret;
 
     /**
      * @var string
@@ -127,17 +127,17 @@ class Account
     /**
      * @return string
      */
-    public function getAccountSecret()
+    public function getAccessSecret()
     {
-        return $this->accountSecret;
+        return $this->accessSecret;
     }
 
     /**
-     * @param string $accountSecret
+     * @param string $accessSecret
      */
-    public function setAccountSecret($accountSecret)
+    public function setAccessSecret($accessSecret)
     {
-        $this->accountSecret = $accountSecret;
+        $this->accessSecret = $accessSecret;
     }
 
     /**

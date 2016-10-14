@@ -24,7 +24,7 @@ class Factory
             $account->getConsumerKey(),
             $account->getConsumerToken(),
             $account->getAccessToken(),
-            $account->getAccountSecret()
+            $account->getAccessSecret()
         );
     }
 }
