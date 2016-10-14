@@ -1,9 +1,9 @@
 accounts:
-    -   email: "",
-        username: "",
-        password: "",
-        phone: "",
-        access-key: "",
-        access-token: "",
-        consumer-key: "",
-        consumer-token: ""
+    - email: ""
+      username: ""
+      password: ""
+      phone: ""
+      access-key: ""
+      access-token: ""
+      consumer-key: ""
+      consumer-token: ""

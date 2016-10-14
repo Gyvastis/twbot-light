@@ -1,8 +1,10 @@
 <?php
 
+var_dump(\Twbot\Config::getAccounts());die;
+
 // Create and configure Slim app
 $config = ['settings' => [
-    'addContentLengthHeader' => false,
+//    'addContentLengthHeader' => false,
 ]];
 
 $app = new \Slim\App($config);

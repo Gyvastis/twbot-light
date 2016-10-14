@@ -4,6 +4,6 @@
         "symfony/yaml": "^3.1"
     },
     "autoload": {
-        "psr-4": {"Twbot\\": "src/"}
+        "psr-4": {"Twbot\\": "src/Twbot/"}
     }
 }
