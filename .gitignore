@@ -1,3 +1,8 @@
 /vendor
 /.idea
 /data/accounts.yml
+
+/media/*
+/media/.gitkeep
+/logs/*
+/logs/.gitkeep
