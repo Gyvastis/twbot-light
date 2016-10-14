@@ -3,6 +3,8 @@
 namespace Twbot\Repository;
 
 
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Yaml\Yaml;
 use Twbot\Entity\Proxy;
 
 class ProxyRepository

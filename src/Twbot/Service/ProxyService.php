@@ -8,7 +8,7 @@ use Twbot\Entity\Proxy;
 
 class ProxyService
 {
-    const PROXY_TIMEOUT_MAX_SECONDS = 1;
+    const PROXY_TIMEOUT_MAX_SECONDS = 2;
 
     /**
      * @var Proxy $proxy
@@ -31,24 +31,27 @@ class ProxyService
         $this->logger = $logger;
     }
 
+    /**
+     * @return boolean
+     */
     public function ping()
     {
-        $fp = fsockopen(
+        if($fp = @fsockopen(
             $this->getProxy()->getIpAddress(),
             $this->getProxy()->getPort(),
             $errorCode,
             $error,
             self::PROXY_TIMEOUT_MAX_SECONDS
-        );
+        )){
+            @fclose($fp);
 
-        if($fp){
-            // It worked
-        } else {
-            // It didn't work
-            // error log
+            return true;
         }
+        else{
+            @fclose($fp);
 
-        fclose($fp);
+            return false;
+        }
     }
 
     /**

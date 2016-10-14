@@ -21,17 +21,6 @@ class Proxy
     protected $id;
 
     /**
-     * Proxy constructor.
-     * @param string $ipAddress
-     * @param int $port
-     */
-    public function __construct($ipAddress, $port)
-    {
-        $this->ipAddress = $ipAddress;
-        $this->port = $port;
-    }
-
-    /**
      * @return string
      */
     public function getIpAddress()

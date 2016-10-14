@@ -11,6 +11,8 @@ final class LoggerEnumerator
 
     const TWITTER_LOGGER = 'twitter';
 
+    const PROXY_LOGGER = 'twitter';
+
     const ACCOUNT_LOGGER = 'account';
 
     const IMAGE_LOGGER = 'image';
