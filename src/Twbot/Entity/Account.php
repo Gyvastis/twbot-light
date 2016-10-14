@@ -45,6 +45,11 @@ class Account
     protected $consumerToken;
 
     /**
+     * @var string
+     */
+    protected $mediaDir;
+
+    /**
      * @return string
      */
     public function getEmail()
@@ -170,6 +175,22 @@ class Account
     public function setConsumerToken($consumerToken)
     {
         $this->consumerToken = $consumerToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaDir()
+    {
+        return $this->mediaDir;
+    }
+
+    /**
+     * @param string $mediaDir
+     */
+    public function setMediaDir($mediaDir)
+    {
+        $this->mediaDir = $mediaDir;
     }
 
 }

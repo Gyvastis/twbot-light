@@ -6,6 +6,7 @@ namespace Twbot\Service;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Twbot\Entity\Account;
 use Twbot\Entity\Message;
+use Twbot\Factory;
 
 class Post
 {
@@ -41,8 +42,28 @@ class Post
     public function send()
     {
         $this->twitter->post("statuses/update", [
-            "status" => $this->getMessage()->getMessage()
+            "status" => $this->getMessage()->getMessage(),
+            'media_ids' => $this->uploadMedia()
         ]);
+
+        if ($this->twitter->getLastHttpCode() == 200) {
+            //handle exception
+        }
+
+        // log image used, media dir, message, ..., generate tracker id?
+    }
+
+    /**
+     * @return string
+     */
+    public function uploadMedia()
+    {
+        $randomImage = Factory::getRandomImage($this->getAccount());
+        $media = $this->twitter->upload('media/upload', ['media' => $randomImage]);
+
+        // handle error
+
+        return $media->media_id_string;
     }
 
     /**

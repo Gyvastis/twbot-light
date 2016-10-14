@@ -27,4 +27,17 @@ class Factory
             $account->getAccessSecret()
         );
     }
+
+    /**
+     * @param Account $account
+     * @return string
+     */
+    public static function getRandomImage($account)
+    {
+        // check if folder exists
+
+        $images = glob(MEDIA_DIR . $account->getMediaDir() . '/*.{jpg,gif,png}', GLOB_BRACE);
+
+        return $images[array_rand($images)];
+    }
 }

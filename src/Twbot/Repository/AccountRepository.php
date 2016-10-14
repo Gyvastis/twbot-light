@@ -32,8 +32,6 @@ class AccountRepository
 
             foreach($accountArray as $accountKey => $accountValue) {
                 $accountKey = preg_replace("/[^A-Za-z0-9 ]/", '', $accountKey);
-//                $accountKey = ucwords($accountKey);
-//                $accountKey = str_replace(' ', '', $accountKey);
 
                 try {
                     $accessor->setValue($account, $accountKey, $accountValue);
@@ -41,6 +39,8 @@ class AccountRepository
                 catch(\Exception $ex){
                     var_dump($ex);
                     die;
+
+                    //log error
                 }
             }
 
