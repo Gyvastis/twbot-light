@@ -4,9 +4,10 @@ namespace Twbot\Service;
 
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Monolog\Logger;
 use Twbot\Entity\Account;
 use Twbot\Entity\Message;
-use Twbot\Factory;
+use Twbot\Factory\ImageFactory;
 
 class Post
 {
@@ -26,18 +27,24 @@ class Post
     protected $twitter;
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * Post constructor.
      * @param TwitterOAuth $twitter
      * @param Account $account
      * @param Message $message
+     * @param Logger $logger
      */
-    public function __construct(TwitterOAuth $twitter, Account $account, Message $message)
+    public function __construct(TwitterOAuth $twitter, Account $account, Message $message, Logger $logger)
     {
-        $this->twitter = $twitter;
         $this->account = $account;
         $this->message = $message;
+        $this->twitter = $twitter;
+        $this->logger = $logger;
     }
-
 
     public function send()
     {
@@ -58,7 +65,7 @@ class Post
      */
     public function uploadMedia()
     {
-        $randomImage = Factory::getRandomImage($this->getAccount());
+        $randomImage = ImageFactory::getRandomImage($this->getAccount());
         $media = $this->twitter->upload('media/upload', ['media' => $randomImage]);
 
         // handle error
