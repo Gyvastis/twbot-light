@@ -23,11 +23,23 @@ class TwitterFactory
      */
     public static function getTwitterOAuth($account)
     {
-        return new TwitterOAuth(
+        $twitterOAuth = new TwitterOAuth(
             $account->getConsumerKey(),
             $account->getConsumerToken(),
             $account->getAccessToken(),
             $account->getAccessSecret()
         );
+
+//        $twitterOAuth->setTimeouts(10, 15);
+
+        if($account->getProxy()){
+            $twitterOAuth->setProxy([
+                'CURLOPT_PROXY' => $account->getProxy()->getIpAddress(),
+                'CURLOPT_PROXYPORT' => $account->getProxy()->getPort(),
+                'CURLOPT_PROXYUSERPWD' => '',
+            ]);
+        }
+
+        return $twitterOAuth;
     }
 }

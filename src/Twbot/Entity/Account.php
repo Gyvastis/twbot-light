@@ -51,6 +51,11 @@ class Account
     protected $mediaDir;
 
     /**
+     * @var Proxy
+     */
+    protected $proxy;
+
+    /**
      * @return string
      */
     public function getEmail()
@@ -192,6 +197,22 @@ class Account
     public function setMediaDir($mediaDir)
     {
         $this->mediaDir = $mediaDir;
+    }
+
+    /**
+     * @return Proxy
+     */
+    public function getProxy()
+    {
+        return $this->proxy;
+    }
+
+    /**
+     * @param Proxy $proxy
+     */
+    public function setProxy($proxy)
+    {
+        $this->proxy = $proxy;
     }
 
 }
