@@ -8,10 +8,10 @@ if(empty($route)){
     die('NOT FOUND');
 }
 
-$routeFile = PUBLIC_DIR . '/' . $route . '.php';
+$routeFile = ROUTE_DIR . '/' . $route . '.php';
 
 if(!file_exists($routeFile)){
     die('ROUTE DOES NOT EXIST');
 }
 
-require $routeFile;
+require "$routeFile";

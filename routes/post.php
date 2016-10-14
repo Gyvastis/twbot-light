@@ -1,9 +1,9 @@
 <?php
 
 // Create and configure Slim app
-//$config = ['settings' => [
-//    'addContentLengthHeader' => false,
-//]];
+$config = ['settings' => [
+    'addContentLengthHeader' => false,
+]];
 
 $app = new \Slim\App($config);
 
