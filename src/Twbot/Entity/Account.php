@@ -51,6 +51,11 @@ class Account
     protected $mediaDir;
 
     /**
+     * @var string
+     */
+    protected $proxyId;
+
+    /**
      * @var Proxy
      */
     protected $proxy;
@@ -197,6 +202,22 @@ class Account
     public function setMediaDir($mediaDir)
     {
         $this->mediaDir = $mediaDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProxyId()
+    {
+        return $this->proxyId;
+    }
+
+    /**
+     * @param string $proxyId
+     */
+    public function setProxyId($proxyId)
+    {
+        $this->proxyId = $proxyId;
     }
 
     /**
