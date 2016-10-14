@@ -1,16 +1,21 @@
 <?php
 
-var_dump(\Twbot\Config::getAccounts());die;
+require '../config.php';
 
-// Create and configure Slim app
 $config = ['settings' => [
-//    'addContentLengthHeader' => false,
+    'addContentLengthHeader' => false,
 ]];
 
 $app = new \Slim\App($config);
 
 $app->get('/', function ($request, $response, $args) {
-    return $response->write("Hello " . $args['name']);
+    return $response->write("Post Job!");
+});
+
+$app->get('/{username}', function ($request, $response, $args) {
+    $username = $request->getAttribute('username');
+
+    return $response->write("Posted to: $username");
 });
 
 $app->run();
