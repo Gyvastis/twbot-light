@@ -10,10 +10,7 @@ $app = new \Slim\App($config);
 
 $container = $app->getContainer();
 $container['logger'] = function($c) {
-    $logger = new \Monolog\Logger('post');
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler(LOG_DIR . "post.log"));
-
-    return $logger;
+    return \Twbot\Factory::getLogger('post');
 };
 
 // - - -

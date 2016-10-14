@@ -10,6 +10,8 @@ namespace Twbot;
 
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Logger;
 use Twbot\Entity\Account;
 
 class Factory
@@ -39,5 +41,17 @@ class Factory
         $images = glob(MEDIA_DIR . $account->getMediaDir() . '/*.{jpg,gif,png}', GLOB_BRACE);
 
         return $images[array_rand($images)];
+    }
+
+    /**
+     * @param string $logName
+     * @return Logger
+     */
+    public static function getLogger($logName = 'main')
+    {
+        $logger = new Logger('post');
+        $logger->pushHandler(new RotatingFileHandler(LOG_DIR . "$logName.log"));
+
+        return $logger;
     }
 }
