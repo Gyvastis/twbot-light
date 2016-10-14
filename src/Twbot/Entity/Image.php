@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vaidas
- * Date: 15/10/2016
- * Time: 01:43
- */
 
 namespace Twbot\Entity;
 

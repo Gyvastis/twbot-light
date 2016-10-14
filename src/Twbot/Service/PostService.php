@@ -38,28 +38,30 @@ class PostService
 
     /**
      * PostService constructor.
-     * @param TwitterOAuth $twitter
      * @param Account $account
      * @param Message $message
+     * @param TwitterOAuth $twitter
      * @param Image $image
      * @param Logger $logger
      */
     public function __construct(TwitterOAuth $twitter, Account $account, Message $message, Image $image, Logger $logger)
     {
+        $this->twitter = $twitter;
         $this->account = $account;
         $this->message = $message;
-        $this->twitter = $twitter;
+        $this->image = $image;
         $this->logger = $logger;
     }
 
+
     public function send()
     {
-        $this->twitter->post("statuses/update", [
+        $this->getTwitter()->post("statuses/update", [
             "status" => $this->getMessage()->getMessage(),
             'media_ids' => $this->uploadMedia()
         ]);
 
-        if ($this->twitter->getLastHttpCode() == 200) {
+        if (!$this->getTwitter()->getLastHttpCode() == 200) {
             //handle exception
         }
 
@@ -71,11 +73,13 @@ class PostService
      */
     public function uploadMedia()
     {
-        $media = $this->twitter->upload('media/upload', ['media' => $this->getImage()->getImagePath()]);
+        $media = $this->getTwitter()->upload('media/upload', ['media' => $this->getImage()->getImagePath()]);
 
-        // handle error
+        if (!$this->getTwitter()->getLastHttpCode() == 200) {
+            //handle exception
+        }
 
-        return $media->media_id_string;
+        return isset($media->media_id_string) ? $media->media_id_string : false;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Twbot\Entity;
 
+
 class Account
 {
     /**

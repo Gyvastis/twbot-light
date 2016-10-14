@@ -1,19 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vaidas
- * Date: 15/10/2016
- * Time: 01:29
- */
 
 namespace Twbot\Factory;
 
 
 use Twbot\Entity\Account;
 use Twbot\Entity\Image;
+use Twbot\Enumerator\LoggerEnumerator;
 
 class ImageFactory
 {
+    /**
+     * @return \Monolog\Logger
+     */
+    public static function getLogger()
+    {
+        return LoggerFactory::getLogger(LoggerEnumerator::IMAGE_LOGGER);
+    }
+
     /**
      * @param Account $account
      * @return string

@@ -1,19 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vaidas
- * Date: 15/10/2016
- * Time: 01:30
- */
 
 namespace Twbot\Factory;
 
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Twbot\Entity\Account;
+use Twbot\Enumerator\LoggerEnumerator;
 
 class TwitterFactory
 {
+    /**
+     * @return \Monolog\Logger
+     */
+    public static function getLogger()
+    {
+        return LoggerFactory::getLogger(LoggerEnumerator::TWITTER_LOGGER);
+    }
+
     /**
      * @param Account $account
      * @return TwitterOAuth

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vaidas
- * Date: 15/10/2016
- * Time: 01:29
- */
 
 namespace Twbot\Factory;
 
@@ -12,6 +6,7 @@ use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Twbot\Core\Error;
+use Twbot\Enumerator\LoggerEnumerator;
 
 
 class LoggerFactory
@@ -21,7 +16,7 @@ class LoggerFactory
      */
     public static function getDefaultErrorHandler()
     {
-        $logger = self::getLogger('error');
+        $logger = self::getLogger(LoggerEnumerator::ERROR_LOGGER);
 
         return new Error($logger);
     }
