@@ -28,7 +28,6 @@ class AccountRepository
 
         foreach($accountsArray as $accountArray){
             $account = new Account();
-            $accountArray = $accountArray;
 
             foreach($accountArray as $accountKey => $accountValue) {
                 $accountKey = preg_replace("/[^A-Za-z0-9 ]/", '', $accountKey);

@@ -13,3 +13,4 @@ define('MEDIA_DIR', BASE_DIR . 'media/');
 define('ROUTE_DIR', BASE_DIR . 'routes/');
 
 define('ACCOUNTS_DATA_FILE', DATA_DIR . 'accounts.yml');
+define('PROXIES_DATA_FILE', DATA_DIR . 'proxies.yml');

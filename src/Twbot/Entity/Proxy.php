@@ -16,6 +16,11 @@ class Proxy
     protected $port;
 
     /**
+     * @var string
+     */
+    protected $id;
+
+    /**
      * Proxy constructor.
      * @param string $ipAddress
      * @param int $port
@@ -56,6 +61,22 @@ class Proxy
     public function setPort($port)
     {
         $this->port = $port;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
 }
