@@ -6,10 +6,10 @@ namespace Twbot\Service;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Monolog\Logger;
 use Twbot\Entity\Account;
+use Twbot\Entity\Image;
 use Twbot\Entity\Message;
-use Twbot\Factory\ImageFactory;
 
-class Post
+class PostService
 {
     /**
      * @var Account
@@ -27,18 +27,24 @@ class Post
     protected $twitter;
 
     /**
+     * @var Image
+     */
+    protected $image;
+
+    /**
      * @var Logger
      */
     protected $logger;
 
     /**
-     * Post constructor.
+     * PostService constructor.
      * @param TwitterOAuth $twitter
      * @param Account $account
      * @param Message $message
+     * @param Image $image
      * @param Logger $logger
      */
-    public function __construct(TwitterOAuth $twitter, Account $account, Message $message, Logger $logger)
+    public function __construct(TwitterOAuth $twitter, Account $account, Message $message, Image $image, Logger $logger)
     {
         $this->account = $account;
         $this->message = $message;
@@ -65,8 +71,7 @@ class Post
      */
     public function uploadMedia()
     {
-        $randomImage = ImageFactory::getRandomImage($this->getAccount());
-        $media = $this->twitter->upload('media/upload', ['media' => $randomImage]);
+        $media = $this->twitter->upload('media/upload', ['media' => $this->getImage()->getImagePath()]);
 
         // handle error
 
@@ -82,14 +87,6 @@ class Post
     }
 
     /**
-     * @param Account $account
-     */
-    public function setAccount($account)
-    {
-        $this->account = $account;
-    }
-
-    /**
      * @return Message
      */
     public function getMessage()
@@ -98,10 +95,27 @@ class Post
     }
 
     /**
-     * @param Message $message
+     * @return TwitterOAuth
      */
-    public function setMessage($message)
+    public function getTwitter()
     {
-        $this->message = $message;
+        return $this->twitter;
     }
+
+    /**
+     * @return Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @return Logger
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
 }

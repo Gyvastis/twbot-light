@@ -21,7 +21,7 @@ class LoggerFactory
      */
     public static function getDefaultErrorHandler()
     {
-        $logger = self::getLogger('default');
+        $logger = self::getLogger('error');
 
         return new Error($logger);
     }

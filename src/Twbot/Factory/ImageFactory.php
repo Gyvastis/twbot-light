@@ -10,6 +10,7 @@ namespace Twbot\Factory;
 
 
 use Twbot\Entity\Account;
+use Twbot\Entity\Image;
 
 class ImageFactory
 {
@@ -22,7 +23,8 @@ class ImageFactory
         // check if folder exists
 
         $images = glob(MEDIA_DIR . $account->getMediaDir() . '/*.{jpg,gif,png}', GLOB_BRACE);
+        $imagePath = $images[array_rand($images)];
 
-        return $images[array_rand($images)];
+        return new Image($imagePath);
     }
 }
