@@ -39,7 +39,7 @@ class TwitterFollowService
     public function getSeedUserFollowers($username, $count = 5000)
     {
         try{
-            $response = $this->twitter->get('followers/ids', array(
+            $response = $this->getTwitter()->get('followers/ids', array(
                 'screen_name' => $username,
                 'count' => $count
             ));
@@ -54,10 +54,26 @@ class TwitterFollowService
     /**
      * @param string $userId
      */
+    public function followByUserId($userId)
+    {
+        try{
+            $this->getTwitter()->post('friendships/create', array(
+                'user_id' => $userId,
+                'follow' => true
+            ));
+        }
+        catch(TwitterOAuthException $ex){
+            $this->getLogger()->addCritical($ex->getMessage());
+        }
+    }
+
+    /**
+     * @param string $userId
+     */
     public function unfriendByUserId($userId)
     {
         try{
-            $this->twitter->post('friendships/destroy', array(
+            $this->getTwitter()->post('friendships/destroy', array(
                 'user_id' => $userId
             ));
         }
