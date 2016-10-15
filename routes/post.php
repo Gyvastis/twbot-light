@@ -6,7 +6,7 @@ global $container;
 $app = new \Slim\App($container);
 
 $app->get('/', function ($request, $response, $args) {
-    $this->logger->addInfo("Poster Home");
+//    $this->logger->addInfo("Poster Home");
 
     return $response->write("Post Job!");
 });
