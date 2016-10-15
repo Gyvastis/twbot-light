@@ -2,25 +2,13 @@
 
 require '../config.php';
 
-$config = ['settings' => [
-    'addContentLengthHeader' => false,
-//    'displayErrorDetails' => true,
-]];
-
-$app = new \Slim\App($config);
-
-$container = $app->getContainer();
-//$container['logger'] = function($c) {
-//    return \Twbot\Factory\LoggerFactory::getLogger(\Twbot\Enumerator\LoggerEnumerator::POST_LOGGER);
-//};
-$container['errorHandler'] = function ($c) {
-    return \Twbot\Factory\LoggerFactory::getDefaultErrorHandler();
-};
+global $container;
+$app = new \Slim\App($container);
 
 // - - -
 
 $app->get('/', function ($request, $response, $args) {
-//    $this->logger->addInfo("Poster Home");
+    $this->logger->addInfo("Poster Home");
 
     return $response->write("Post Job!");
 });
