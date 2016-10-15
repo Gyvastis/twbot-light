@@ -5,7 +5,9 @@ namespace Twbot\Factory;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Twbot\Entity\Account;
+use Twbot\Enumerator\EventEnumerator;
 use Twbot\Enumerator\LoggerEnumerator;
+use Twbot\Event\AccountProxySet;
 
 class TwitterFactory
 {
@@ -38,6 +40,8 @@ class TwitterFactory
                 'CURLOPT_PROXYPORT' => $account->getProxy()->getPort(),
                 'CURLOPT_PROXYUSERPWD' => '',
             ]);
+
+            getProvider('dispatcher')->dispatch(EventEnumerator::ACCOUNT_PROXY_SET_EVENT, (new AccountProxySet())->setAccount($account));
         }
 
         return $twitterOAuth;
