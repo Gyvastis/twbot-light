@@ -34,6 +34,8 @@ class ProxyService
      */
     public function ping()
     {
+        $startTime = microtime(true);
+
         if($fp = @fsockopen(
             $this->getProxy()->getIpAddress(),
             $this->getProxy()->getPort(),
@@ -42,6 +44,10 @@ class ProxyService
             self::PROXY_TIMEOUT_MAX_SECONDS
         )){
             @fclose($fp);
+
+            $timeDifference = microtime(true) - $startTime;
+            $timeDifference = round($timeDifference, 3);
+            $this->getLogger()->addInfo("Proxy {$this->getProxy()} responded in {$timeDifference}s");
 
             return true;
         }
