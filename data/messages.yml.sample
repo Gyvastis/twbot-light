@@ -1,0 +1,7 @@
+category_first:
+  - "test first msg"
+  - "test second msg"
+
+category_second:
+  - "test[2] first msg"
+  - "test[2] second msg"
