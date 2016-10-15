@@ -48,12 +48,11 @@ $container['dispatcher']->addListener(\Twbot\Enumerator\EventEnumerator::ACCOUNT
 $container['dispatcher']->addListener(\Twbot\Enumerator\EventEnumerator::ACCOUNT_PROXY_SET_EVENT, function (\Twbot\Event\AccountProxySet $event) {
     $proxy = $event->getAccount()->getProxy();
 
-    if($proxy->getIpAddress() != '' && $proxy->getPort() != ''){
+    if($proxy){
         /**
          * @var \Twbot\Service\ProxyService $proxyService
          */
         $proxyService = getProvider('proxyService');
-
         $proxyService->setProxy($proxy);
 
         if(!$proxyService->ping()){

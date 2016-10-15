@@ -30,7 +30,7 @@ class TwitterFactory
             $account->getAccessSecret()
         );
 
-//        $twitterOAuth->setTimeouts(10, 15);
+        $twitterOAuth->setTimeouts(10, 15);
 
         if($account->getProxy()){
             $twitterOAuth->setProxy([

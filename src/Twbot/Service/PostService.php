@@ -4,6 +4,7 @@ namespace Twbot\Service;
 
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Abraham\TwitterOAuth\TwitterOAuthException;
 use Monolog\Logger;
 use Twbot\Entity\Account;
 use Twbot\Entity\Image;
@@ -73,10 +74,13 @@ class PostService
      */
     public function uploadMedia()
     {
-        $media = $this->getTwitter()->upload('media/upload', ['media' => $this->getImage()->getImagePath()]);
+        $media = null;
 
-        if (!$this->getTwitter()->getLastHttpCode() == 200) {
-            //handle exception
+        try {
+            $media = $this->getTwitter()->upload('media/upload', ['media' => $this->getImage()->getImagePath()]);
+        }
+        catch(TwitterOAuthException $ex){
+            $this->getLogger()->addCritical($ex->getMessage());
         }
 
         return isset($media->media_id_string) ? $media->media_id_string : false;
