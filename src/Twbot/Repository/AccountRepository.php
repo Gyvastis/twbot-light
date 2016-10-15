@@ -5,6 +5,8 @@ namespace Twbot\Repository;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Yaml\Yaml;
 use Twbot\Entity\Account;
+use Twbot\Enumerator\EventEnumerator;
+use Twbot\Event\AccountFound;
 
 class AccountRepository
 {
@@ -61,6 +63,8 @@ class AccountRepository
         foreach($accounts as $account){
             if($account->getUsername() == $username){
                 $foundAccount = $account;
+
+                getProvider('dispatcher')->dispatch(EventEnumerator::ACCOUNT_FOUND_EVENT, (new AccountFound())->setAccount($account));
 
                 break;
             }

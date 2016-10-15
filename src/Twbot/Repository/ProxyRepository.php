@@ -63,6 +63,8 @@ class ProxyRepository
             if($proxy->getId() == $id){
                 $foundProxy = $proxy;
 
+                getProvider('dispatcher')->dispatch('proxy.found');
+
                 break;
             }
         }

@@ -4,7 +4,8 @@
         "symfony/yaml": "^3.1",
         "abraham/twitteroauth": "^0.6.6",
         "monolog/monolog": "^1.21",
-        "symfony/property-access": "^3.1"
+        "symfony/property-access": "^3.1",
+        "symfony/event-dispatcher": "^3.1"
     },
     "autoload": {
         "psr-4": {"Twbot\\": "src/Twbot/"}

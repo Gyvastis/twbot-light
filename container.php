@@ -21,3 +21,15 @@ function getProvider($serviceName){
 $container['errorHandler'] = function ($container) {
     return \Twbot\Factory\LoggerFactory::getDefaultErrorHandler();
 };
+
+$container['dispatcher'] = function ($container) {
+    return new Symfony\Component\EventDispatcher\EventDispatcher();
+};
+
+$container['dispatcher']->addListener(\Twbot\Enumerator\EventEnumerator::ACCOUNT_FOUND_EVENT, function (\Twbot\Event\AccountFound $event) {
+    $account = $event->getAccount();
+
+    $account->setProxy(\Twbot\Repository\ProxyRepository::getProxyById($account->getProxyId()));
+
+    $event->setAccount($account);
+});
