@@ -4,6 +4,7 @@ global $container;
 
 $container = new \Slim\Container([
     'displayErrorDetails' => true,
+//    'routerCacheFile' => ROUTER_CACHE_FILE
 ]);
 
 /**
