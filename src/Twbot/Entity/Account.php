@@ -61,6 +61,11 @@ class Account
     protected $proxy;
 
     /**
+     * @var string
+     */
+    protected $messageCategoryName;
+
+    /**
      * @return string
      */
     public function getEmail()
@@ -234,6 +239,22 @@ class Account
     public function setProxy($proxy)
     {
         $this->proxy = $proxy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessageCategoryName()
+    {
+        return $this->messageCategoryName;
+    }
+
+    /**
+     * @param string $messageCategoryName
+     */
+    public function setMessageCategoryName($messageCategoryName)
+    {
+        $this->messageCategoryName = $messageCategoryName;
     }
 
 }

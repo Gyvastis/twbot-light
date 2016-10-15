@@ -19,9 +19,7 @@ $app->get('/{username}', function ($request, $response, $args) {
     $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
     $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
     $image = \Twbot\Factory\ImageFactory::getRandomImage($account);
-
-    $message = new \Twbot\Entity\Message();
-    $message->setMessage('Test first message');
+    $message = \Twbot\Factory\MessageFactory::getRandomMessage($account->getMessageCategoryName());
 
     $postService = new \Twbot\Service\PostService($twitter, $account, $message, $image, $logger);
     $postService->send();
