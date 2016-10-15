@@ -68,4 +68,12 @@ class Proxy
         $this->id = $id;
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getIpAddress() . ':' . $this->getPort();
+    }
+
 }

@@ -3,6 +3,9 @@
 namespace Twbot\Entity;
 
 
+use Twbot\Enumerator\EventEnumerator;
+use Twbot\Event\AccountProxySet;
+
 class Account
 {
     /**
@@ -234,6 +237,8 @@ class Account
     public function setProxy($proxy)
     {
         $this->proxy = $proxy;
+
+        getProvider('dispatcher')->dispatch(EventEnumerator::ACCOUNT_PROXY_SET_EVENT, (new AccountProxySet())->setAccount($this));
     }
 
 }

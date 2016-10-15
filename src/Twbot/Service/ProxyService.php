@@ -22,12 +22,10 @@ class ProxyService
 
     /**
      * ProxyService constructor.
-     * @param Proxy $proxy
      * @param Logger $logger
      */
-    public function __construct(Proxy $proxy, Logger $logger)
+    public function __construct(Logger $logger)
     {
-        $this->proxy = $proxy;
         $this->logger = $logger;
     }
 
@@ -49,6 +47,8 @@ class ProxyService
         }
         else{
             @fclose($fp);
+
+            $this->getLogger()->addCritical("Proxy {$this->getProxy()} is unreachable.");
 
             return false;
         }
