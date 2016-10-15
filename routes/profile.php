@@ -14,8 +14,8 @@ $app->group('/image-rotate', function () {
         $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
         $logger = \Twbot\Factory\TwitterFactory::getLogger();
 
-        $twitterService = new \Twbot\Service\TwitterService($twitter, $logger);
-        $twitterService->uploadProfileImage($image);
+        $twitterUploadService = new \Twbot\Service\TwitterUploadService($twitter, $logger);
+        $twitterUploadService->uploadProfileImage($image);
 
         return $response->write("Profile $username Rotate!");
     });
@@ -28,8 +28,8 @@ $app->group('/image-rotate', function () {
         $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
         $logger = \Twbot\Factory\TwitterFactory::getLogger();
 
-        $twitterService = new \Twbot\Service\TwitterService($twitter, $logger);
-        $twitterService->uploadBackgroundImage($image);
+        $twitterUploadService = new \Twbot\Service\TwitterUploadService($twitter, $logger);
+        $twitterUploadService->uploadProfileImage($image);
 
         return $response->write("Background $username Rotate!");
     });

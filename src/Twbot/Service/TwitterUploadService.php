@@ -8,7 +8,7 @@ use Abraham\TwitterOAuth\TwitterOAuthException;
 use Monolog\Logger;
 use Twbot\Entity\Image;
 
-class TwitterService
+class TwitterUploadService
 {
     /**
      * @var TwitterOAuth
@@ -29,6 +29,24 @@ class TwitterService
     {
         $this->twitter = $twitter;
         $this->logger = $logger;
+    }
+
+    /**
+     * @param Image $image
+     * @return array|object
+     */
+    public function uploadImage($image)
+    {
+        try {
+            $media = $this->getTwitter()->upload('media/upload', array(
+                "media" => $image->getImagePath()
+            ));
+        }
+        catch(TwitterOAuthException $ex){
+            $this->getLogger()->addCritical($ex->getMessage());
+        }
+
+        return $media;
     }
 
     /**

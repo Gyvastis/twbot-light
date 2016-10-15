@@ -74,14 +74,8 @@ class PostService
      */
     public function uploadMedia()
     {
-        $media = null;
-
-        try {
-            $media = $this->getTwitter()->upload('media/upload', ['media' => $this->getImage()->getImagePath()]);
-        }
-        catch(TwitterOAuthException $ex){
-            $this->getLogger()->addCritical($ex->getMessage());
-        }
+        $media = (new TwitterUploadService($this->getTwitter(), $this->getLogger()))
+            ->uploadImage($this->getImage());
 
         return isset($media->media_id_string) ? $media->media_id_string : false;
     }
