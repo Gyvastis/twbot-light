@@ -23,6 +23,14 @@ $app->group('/image-rotate', function () {
     $this->get('/background/{username}', function ($request, $response, $args) {
         $username = $request->getAttribute('username');
 
+        $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
+        $image = \Twbot\Factory\ImageFactory::getRandomImage($account);
+        $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
+        $logger = \Twbot\Factory\TwitterFactory::getLogger();
+
+        $twitterService = new \Twbot\Service\TwitterService($twitter, $logger);
+        $twitterService->uploadBackgroundImage($image);
+
         return $response->write("Background $username Rotate!");
     });
 });
