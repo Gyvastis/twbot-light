@@ -6,6 +6,7 @@ namespace Twbot\Service;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Abraham\TwitterOAuth\TwitterOAuthException;
 use Monolog\Logger;
+use Twbot\Entity\Image;
 
 class TwitterService
 {
@@ -31,13 +32,13 @@ class TwitterService
     }
 
     /**
-     * @param string $imagePath
+     * @param Image $image
      */
-    public function uploadProfileImage($imagePath)
+    public function uploadProfileImage($image)
     {
         try {
             $this->getTwitter()->post('account/update_profile_image', array(
-                "image" => base64_encode(file_get_contents($imagePath)))
+                "image" => base64_encode(file_get_contents($image->getImagePath()))
             ));
         }
         catch(TwitterOAuthException $ex){
@@ -46,13 +47,13 @@ class TwitterService
     }
 
     /**
-     * @param string $imagePath
+     * @param Image $image
      */
-    public function uploadBackgroundImage($imagePath)
+    public function uploadBackgroundImage($image)
     {
         try {
             $this->getTwitter()->post('account/update_profile_banner', array(
-                "banner" => base64_encode(file_get_contents($imagePath)))
+                "banner" => base64_encode(file_get_contents($image->getImagePath()))
             ));
         }
         catch(TwitterOAuthException $ex){
