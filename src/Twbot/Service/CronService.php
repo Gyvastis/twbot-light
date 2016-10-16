@@ -5,6 +5,13 @@ namespace Twbot\Service;
 
 class CronService
 {
+    public function shouldPost($account)
+    {
+        // last posted?
+
+        return true;
+    }
+
     /**
      * @param \DateTime $compareTime
      * @param bool|\DateTime $currentTime
