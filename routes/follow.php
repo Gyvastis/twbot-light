@@ -5,8 +5,11 @@ require '../config.php';
 global $container;
 $app = new \Slim\App($container);
 
-$app->get('/get-followers/{username}', function ($request, $response, $args) {
+$app->get('/get-followers[/{username}]', function ($request, $response, $args) {
     $username = $request->getAttribute('username');
+    if(!$username){
+        $username = \Twbot\Factory\SeederFactory::getRandomSeederUsername();
+    }
 
     $account = \Twbot\Factory\AccountFactory::getRandomAccount();
     $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);

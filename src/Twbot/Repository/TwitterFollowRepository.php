@@ -2,7 +2,6 @@
 
 namespace Twbot\Repository;
 
-use Illuminate\Database\Query\Builder;
 use Twbot\Exception\DatabaseException;
 
 class TwitterFollowRepository
@@ -119,7 +118,7 @@ class TwitterFollowRepository
                 'favourites_count' => $userInfo['favourites_count'],
                 'statuses_count' => $userInfo['statuses_count'],
             ], ['user_id' => $userInfo['id_str']]);
-            
+
             $this->handleDatabaseException();
         }
     }
