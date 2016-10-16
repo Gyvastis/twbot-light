@@ -71,6 +71,31 @@ class Account
     protected $messageCategoryName;
 
     /**
+     * @var integer
+     */
+    protected $postIntervalMinutes;
+
+    /**
+     * @var integer
+     */
+    protected $unfriendIntervalMinutes;
+
+    /**
+     * @var integer
+     */
+    protected $unfriendAmountMax;
+
+    /**
+     * @var integer
+     */
+    protected $followIntervalMinutes;
+
+    /**
+     * @var integer
+     */
+    protected $followAmountMax;
+
+    /**
      * @return string
      */
     public function getEmail()
@@ -276,6 +301,86 @@ class Account
     public function setMessageCategoryName($messageCategoryName)
     {
         $this->messageCategoryName = $messageCategoryName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPostIntervalMinutes()
+    {
+        return $this->postIntervalMinutes;
+    }
+
+    /**
+     * @param int $postIntervalMinutes
+     */
+    public function setPostIntervalMinutes($postIntervalMinutes)
+    {
+        $this->postIntervalMinutes = $postIntervalMinutes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnfriendIntervalMinutes()
+    {
+        return $this->unfriendIntervalMinutes;
+    }
+
+    /**
+     * @param int $unfriendIntervalMinutes
+     */
+    public function setUnfriendIntervalMinutes($unfriendIntervalMinutes)
+    {
+        $this->unfriendIntervalMinutes = $unfriendIntervalMinutes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnfriendAmountMax()
+    {
+        return $this->unfriendAmountMax;
+    }
+
+    /**
+     * @param int $unfriendAmountMax
+     */
+    public function setUnfriendAmountMax($unfriendAmountMax)
+    {
+        $this->unfriendAmountMax = $unfriendAmountMax;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFollowIntervalMinutes()
+    {
+        return $this->followIntervalMinutes;
+    }
+
+    /**
+     * @param int $followIntervalMinutes
+     */
+    public function setFollowIntervalMinutes($followIntervalMinutes)
+    {
+        $this->followIntervalMinutes = $followIntervalMinutes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFollowAmountMax()
+    {
+        return $this->followAmountMax;
+    }
+
+    /**
+     * @param int $followAmountMax
+     */
+    public function setFollowAmountMax($followAmountMax)
+    {
+        $this->followAmountMax = $followAmountMax;
     }
 
 }

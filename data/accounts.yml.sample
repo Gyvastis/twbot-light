@@ -7,6 +7,11 @@
   consumer-key: ""
   consumer-token: ""
   disabled: 0
+  post-interval-minutes: 180
+  unfriend-interval-minutes: 1440
+  unfriend-amount-max: 200
+  follow-interval-minutes: 30
+  follow-amount-max: 15
   media-dir: ""
   proxy-id: "tor"
   message-category-name: "category_first"
@@ -20,6 +25,11 @@
   consumer-key: ""
   consumer-token: ""
   disabled: 0
+  post-interval-minutes: 180
+  unfriend-interval-minutes: 1440
+  unfriend-amount-max: 200
+  follow-interval-minutes: 30
+  follow-amount-max: 15
   media-dir: ""
   proxy-id: "tor2"
   message-category-name: "category_second"
