@@ -8,14 +8,12 @@ $container = new \Slim\Container([
 //        'determineRouteBeforeAppMiddleware' => false,
         'displayErrorDetails' => true,
         'db' => [
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'scotchbox',
+            'database_type' => 'mysql',
+            'database_name' => 'scotchbox',
+            'server' => 'localhost',
             'username' => 'root',
             'password' => 'root',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
+            'charset' => 'utf8'
         ]
     ],
 ]);
@@ -41,13 +39,7 @@ $container['dispatcher'] = function ($container) {
 };
 
 $container['db'] = function ($container) {
-    $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($container['settings']['db']);
-
-    $capsule->setAsGlobal();
-    $capsule->bootEloquent();
-
-    return $capsule;
+    return new medoo($container['settings']['db']);
 };
 
 /**
