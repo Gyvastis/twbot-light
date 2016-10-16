@@ -43,4 +43,15 @@ class TwitterFollowRepository
         $this->followersUsedTable->insert(compact('username', 'user_id'));
     }
 
+    /**
+     * @param string $user_id
+     */
+    public function addUserIdFree($user_id)
+    {
+        if($this->followersFreeTable->select('id')->where('user_id', $user_id)->exists()) {
+
+            $this->followersFreeTable->insert(compact('user_id'));
+        }
+    }
+
 }
