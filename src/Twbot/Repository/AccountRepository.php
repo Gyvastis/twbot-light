@@ -19,9 +19,10 @@ class AccountRepository
     }
 
     /**
+     * @param boolean $skipDisabled
      * @return Account[]
      */
-    public static function getAccounts()
+    public static function getAccounts($skipDisabled = true)
     {
         $accessor = new PropertyAccessor(true);
 
@@ -43,6 +44,10 @@ class AccountRepository
 
                     //log error
                 }
+            }
+
+            if($skipDisabled && $account->isDisabled()){
+                continue;
             }
 
             $accounts[] = $account;

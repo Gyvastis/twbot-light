@@ -6,9 +6,10 @@
   access-token: ""
   consumer-key: ""
   consumer-token: ""
+  disabled: 0
   media-dir: ""
-  proxy-id: ""
-  message-category-name: ""
+  proxy-id: "tor"
+  message-category-name: "category_first"
 
 - email: ""
   username: ""
@@ -18,6 +19,7 @@
   access-token: ""
   consumer-key: ""
   consumer-token: ""
+  disabled: 0
   media-dir: ""
-  proxy-id: ""
-  message-category-name: ""
+  proxy-id: "tor2"
+  message-category-name: "category_second"

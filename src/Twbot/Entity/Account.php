@@ -46,6 +46,11 @@ class Account
     protected $consumerToken;
 
     /**
+     * @var boolean
+     */
+    protected $disabled;
+
+    /**
      * @var string
      */
     protected $mediaDir;
@@ -191,6 +196,22 @@ class Account
     public function setConsumerToken($consumerToken)
     {
         $this->consumerToken = $consumerToken;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @param boolean $disabled
+     */
+    public function setDisabled($disabled)
+    {
+        $this->disabled = (bool)$disabled;
     }
 
     /**
