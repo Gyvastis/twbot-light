@@ -8,8 +8,9 @@ $app = new \Slim\App($container);
 $app->get('/test-cron/{username}', function ($request, $response, $args) {
     $username = $request->getAttribute('username');
 
-    $cronRepo = new \Twbot\Repository\CronRepository();
-    $jobDate = $cronRepo->getJobDate($username, \Twbot\Enumerator\CronEnumerator::POST_JOB);
+    $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
+    $cronService = new \Twbot\Service\CronService(new \Twbot\Repository\CronRepository());
+    var_dump($cronService->shouldPost($account), $account->getUsername());
 
     return $response->write('cron test');
 });

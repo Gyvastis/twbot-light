@@ -3,13 +3,43 @@
 namespace Twbot\Service;
 
 
+use Twbot\Entity\Account;
+use Twbot\Enumerator\CronEnumerator;
+use Twbot\Repository\CronRepository;
+
 class CronService
 {
+    /**
+     * @var CronRepository $cronRepository
+     */
+    protected $cronRepository;
+
+    /**
+     * CronService constructor.
+     * @param CronRepository $cronRepository
+     */
+    public function __construct(CronRepository $cronRepository)
+    {
+        $this->cronRepository = $cronRepository;
+    }
+
+    /**
+     * @return CronRepository
+     */
+    public function getCronRepository()
+    {
+        return $this->cronRepository;
+    }
+
+    /**
+     * @param Account $account
+     * @return bool
+     */
     public function shouldPost($account)
     {
-        // last posted?
+        $lastPostDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronEnumerator::POST_JOB);
 
-        return true;
+        return !$lastPostDate || $this->getDateTimeDiffMinutes($lastPostDate) > $account->getPostIntervalMinutes();
     }
 
     /**
