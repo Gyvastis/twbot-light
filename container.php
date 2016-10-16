@@ -3,7 +3,19 @@
 global $container;
 
 $container = new \Slim\Container([
+
+    'determineRouteBeforeAppMiddleware' => false,
     'displayErrorDetails' => true,
+    'db' => [
+        'driver' => 'mysql',
+        'host' => 'localhost',
+        'database' => 'scotchbox',
+        'username' => 'root',
+        'password' => 'root',
+        'charset'   => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix'    => '',
+    ],
 //    'routerCacheFile' => ROUTER_CACHE_FILE
 ]);
 
@@ -30,6 +42,16 @@ $container['proxyService'] = function($container) {
 
 $container['dispatcher'] = function ($container) {
     return new Symfony\Component\EventDispatcher\EventDispatcher();
+};
+
+$container['db'] = function ($container) {
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($container['settings']['db']);
+
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
+    return $capsule;
 };
 
 /**
