@@ -25,7 +25,7 @@ $app->get('/test-follow-used', function ($request, $response, $args) {
      */
     $twitterFollowRepository = getProvider('twitterFollowRepository');
 
-    $twitterFollowRepository->addUserIdUsed('test1', '123123');
+    $twitterFollowRepository->addUserIdUsed('test12', '1231231');
 });
 
 $app->run();

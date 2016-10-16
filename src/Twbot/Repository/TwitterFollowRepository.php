@@ -26,6 +26,15 @@ class TwitterFollowRepository
     }
 
     /**
+     * @param string $user_id
+     * @return bool
+     */
+    public function isUserIdUsed($user_id)
+    {
+        return $this->followersUsedTable->select('id')->where('user_id', $user_id)->exists();
+    }
+
+    /**
      * @param string $username
      * @param string $user_id
      */
