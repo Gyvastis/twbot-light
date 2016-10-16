@@ -25,7 +25,7 @@ $app->get('/get-followers[/{username}]', function ($request, $response, $args) {
      * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
      */
     $twitterFollowRepository = getProvider('twitterFollowRepository');
-    $twitterFollowRepository->addUserIdFreeBulk($followerIds);
+    $twitterFollowRepository->addUserIdFreeBulk($username, $followerIds);
 
     return $response->write('Fetched ' . count($followerIds) . ' from ' . $username);
 });

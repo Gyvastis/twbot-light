@@ -58,15 +58,16 @@ class TwitterFollowRepository
     }
 
     /**
-     * @param $user_ids
+     * @param string $seeder_username
+     * @param string $user_ids
      */
-    public function addUserIdFreeBulk($user_ids)
+    public function addUserIdFreeBulk($seeder_username, $user_ids)
     {
         $insertSt = [];
 
         foreach ($user_ids as $user_id) {
             if (!$this->db->has('followers_free', compact('user_id'))) {
-                $insertSt[] = compact('user_id');
+                $insertSt[] = compact('seeder_username', 'user_id');
             }
 
             $this->handleDatabaseException();
@@ -112,7 +113,6 @@ class TwitterFollowRepository
                 'time_zone' => $userInfo['time_zone'],
                 'utc_offset' => $userInfo['utc_offset'],
                 'created_at' => date('Y-m-d H:i:s', strtotime($userInfo['created_at'])),
-                'follow_request_sent' => $userInfo['follow_request_sent'],
                 'followers_count' => $userInfo['followers_count'],
                 'friends_count' => $userInfo['friends_count'],
                 'favourites_count' => $userInfo['favourites_count'],
