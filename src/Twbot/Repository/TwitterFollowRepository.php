@@ -74,4 +74,45 @@ class TwitterFollowRepository
         }
     }
 
+    /**
+     * @param int $take
+     * @return array
+     */
+    public function getUsersWithoutInfo($take = 1)
+    {
+        $userIds = $this->followersFreeTable->where('screen_name', '')->get(['user_id'])->take($take)->toArray();
+
+        foreach($userIds as &$userId){
+            $userId = $userId->user_id;
+        }
+
+        return $userIds;
+    }
+
+    /**
+     * @param array $userInfos
+     */
+    public function saveUserInfos($userInfos)
+    {
+        foreach($userInfos as $userInfo){
+            $userInfo = (array)$userInfo;
+
+            $this->followersFreeTable->where('user_id', $userInfo['id'])->update([
+                'screen_name' => $userInfo['screen_name'],
+                'name' => $userInfo['name'],
+                'lang' => $userInfo['lang'],
+                'location' => $userInfo['location'],
+                'geo_enabled' => $userInfo['geo_enabled'],
+                'time_zone' => $userInfo['time_zone'],
+                'utc_offset' => $userInfo['utc_offset'],
+                'created_at' => date('Y-m-d H:i:s', strtotime($userInfo['created_at'])),
+                'follow_request_sent' => $userInfo['follow_request_sent'],
+                'followers_count' => $userInfo['followers_count'],
+                'friends_count' => $userInfo['friends_count'],
+                'favourites_count' => $userInfo['favourites_count'],
+                'statuses_count' => $userInfo['statuses_count'],
+            ]);
+        }
+    }
+
 }

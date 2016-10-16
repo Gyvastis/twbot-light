@@ -83,6 +83,24 @@ class TwitterFollowService
     }
 
     /**
+     * @param array $userIds
+     * @return array|object
+     */
+    public function fetchUserInfoByUserIds($userIds)
+    {
+        try{
+            $userInfos = $this->getTwitter()->post('users/lookup', array(
+                'user_id' => implode(',', $userIds)
+            ));
+        }
+        catch(TwitterOAuthException $ex){
+            $this->getLogger()->addCritical($ex->getMessage());
+        }
+
+        return $userInfos;
+    }
+
+    /**
      * @return TwitterOAuth
      */
     public function getTwitter()
