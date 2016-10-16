@@ -18,4 +18,14 @@ $app->get('/get-followers/{username}', function ($request, $response, $args) {
     return $response->write(var_export($followerIds));
 });
 
+
+$app->get('/test-follow-used', function ($request, $response, $args) {
+    /**
+     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
+     */
+    $twitterFollowRepository = getProvider('twitterFollowRepository');
+
+    $twitterFollowRepository->addUserIdUsed('test1', '123123');
+});
+
 $app->run();

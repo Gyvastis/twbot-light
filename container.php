@@ -3,27 +3,29 @@
 global $container;
 
 $container = new \Slim\Container([
-
-    'determineRouteBeforeAppMiddleware' => false,
-    'displayErrorDetails' => true,
-    'db' => [
-        'driver' => 'mysql',
-        'host' => 'localhost',
-        'database' => 'scotchbox',
-        'username' => 'root',
-        'password' => 'root',
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
-        'prefix'    => '',
+    'settings' => [
+//        'routerCacheFile' => ROUTER_CACHE_FILE,
+//        'determineRouteBeforeAppMiddleware' => false,
+        'displayErrorDetails' => true,
+        'db' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'database' => 'scotchbox',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+        ]
     ],
-//    'routerCacheFile' => ROUTER_CACHE_FILE
 ]);
 
 /**
  * @param $serviceName
  * @return object
  */
-function getProvider($serviceName){
+function getProvider($serviceName)
+{
     global $container;
     $serviceName = lcfirst($serviceName);
 
@@ -32,12 +34,6 @@ function getProvider($serviceName){
 
 $container['errorHandler'] = function ($container) {
     return \Twbot\Factory\LoggerFactory::getDefaultErrorHandler();
-};
-
-$container['proxyService'] = function($container) {
-    $logger = \Twbot\Factory\LoggerFactory::getLogger(\Twbot\Enumerator\LoggerEnumerator::PROXY_LOGGER);
-
-    return new \Twbot\Service\ProxyService($logger);
 };
 
 $container['dispatcher'] = function ($container) {
@@ -55,13 +51,26 @@ $container['db'] = function ($container) {
 };
 
 /**
+ * Services
+ */
+$container['proxyService'] = function ($container) {
+    $logger = \Twbot\Factory\LoggerFactory::getLogger(\Twbot\Enumerator\LoggerEnumerator::PROXY_LOGGER);
+
+    return new \Twbot\Service\ProxyService($logger);
+};
+
+$container['twitterFollowRepository'] = function ($container) {
+    return new \Twbot\Repository\TwitterFollowRepository();
+};
+
+/**
  * Events
  */
 $container['dispatcher']->addListener(\Twbot\Enumerator\EventEnumerator::ACCOUNT_FOUND_EVENT, function (\Twbot\Event\AccountFound $event) {
     $account = $event->getAccount();
     $proxyId = $account->getProxyId();
 
-    if(!empty($proxyId)) {
+    if (!empty($proxyId)) {
         $account->setProxy(\Twbot\Repository\ProxyRepository::getProxyById($proxyId));
     }
 
@@ -70,14 +79,14 @@ $container['dispatcher']->addListener(\Twbot\Enumerator\EventEnumerator::ACCOUNT
 $container['dispatcher']->addListener(\Twbot\Enumerator\EventEnumerator::ACCOUNT_PROXY_SET_EVENT, function (\Twbot\Event\AccountProxySet $event) {
     $proxy = $event->getAccount()->getProxy();
 
-    if($proxy){
+    if ($proxy) {
         /**
          * @var \Twbot\Service\ProxyService $proxyService
          */
         $proxyService = getProvider('proxyService');
         $proxyService->setProxy($proxy);
 
-        if(!$proxyService->ping()){
+        if (!$proxyService->ping()) {
             $event->stopPropagation();
         }
     }
