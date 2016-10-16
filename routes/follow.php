@@ -13,7 +13,7 @@ $app->get('/get-followers/{username}', function ($request, $response, $args) {
     $logger = \Twbot\Factory\TwitterFactory::getLogger();
     $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
 
-    $followerIds = $twitterFollowService->getSeedUserFollowers($username);
+    $followerIds = $twitterFollowService->getSeedUserFollowers($username, 100);
     if(empty($followerIds)){
         return $response->write('No followers fetched');
     }
@@ -38,7 +38,7 @@ $app->get('/get-follower-info', function ($request, $response, $args) {
     $logger = \Twbot\Factory\TwitterFactory::getLogger();
     $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
 
-    $userIds = $twitterFollowRepository->getUsersWithoutInfo(1);
+    $userIds = $twitterFollowRepository->getUsersWithoutInfo(100);
     $userInfos = $twitterFollowService->fetchUserInfoByUserIds($userIds);
 
     $twitterFollowRepository->saveUserInfos($userInfos);

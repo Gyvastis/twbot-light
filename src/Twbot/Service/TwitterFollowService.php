@@ -41,6 +41,7 @@ class TwitterFollowService
         try{
             $response = $this->getTwitter()->get('followers/ids', array(
                 'screen_name' => $username,
+                'stringify_ids' => true,
                 'count' => $count
             ));
         }

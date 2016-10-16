@@ -3,26 +3,35 @@
 namespace Twbot\Repository;
 
 use Illuminate\Database\Query\Builder;
+use Twbot\Exception\DatabaseException;
 
 class TwitterFollowRepository
 {
     /**
-     * @var Builder
+     * @var \medoo
      */
-    protected $followersFreeTable;
-
-    /**
-     * @var Builder
-     */
-    protected $followersUsedTable;
+    protected $db;
 
     /**
      * TwitterFollowRepository constructor.
      */
     public function __construct()
     {
-        $this->followersFreeTable = getProvider('db')->table('followers_free');
-        $this->followersUsedTable = getProvider('db')->table('followers_used');
+        $this->db = getProvider('db');
+    }
+
+    /**
+     * @throws DatabaseException
+     */
+    protected function handleDatabaseException()
+    {
+        $error = $this->db->error();
+
+        if (!isset($error[2]) && !empty($error[2])) {
+            throw new DatabaseException($error[2]);
+        }
+
+        unset($error);
     }
 
     /**
@@ -31,7 +40,11 @@ class TwitterFollowRepository
      */
     public function isUserIdUsed($user_id)
     {
-        return $this->followersUsedTable->select('id')->where('user_id', $user_id)->exists();
+        $exists = $this->db->has('followers_used', compact('user_id'));
+
+        $this->handleDatabaseException();
+
+        return $exists;
     }
 
     /**
@@ -40,37 +53,30 @@ class TwitterFollowRepository
      */
     public function addUserIdUsed($username, $user_id)
     {
-        $this->followersUsedTable->insert(compact('username', 'user_id'));
+        $this->db->insert('followers_used', compact('username', 'user_id'));
+
+        $this->handleDatabaseException();
     }
 
     /**
-     * @param string $user_id
-     */
-    public function addUserIdFree($user_id)
-    {
-        if(!$this->followersFreeTable->select('id')->where('user_id', $user_id)->exists()) {
-
-            $this->followersFreeTable->insert(compact('user_id'));
-        }
-    }
-
-    /**
-     * @param array $user_ids
+     * @param $user_ids
      */
     public function addUserIdFreeBulk($user_ids)
     {
-        $insert = [];
+        $insertSt = [];
 
-        foreach($user_ids as $user_id){
-            if(!$this->followersFreeTable->select('id')->where('user_id', $user_id)->exists()) {
-                $insert[] = [
-                    'user_id' => $user_id
-                ];
+        foreach ($user_ids as $user_id) {
+            if (!$this->db->has('followers_free', compact('user_id'))) {
+                $insertSt[] = compact('user_id');
             }
+
+            $this->handleDatabaseException();
         }
 
-        if(!empty($insert)){
-            $this->followersFreeTable->insert($insert);
+        if (!empty($insertSt)) {
+            $this->db->insert('followers_free', $insertSt);
+
+            $this->handleDatabaseException();
         }
     }
 
@@ -80,13 +86,14 @@ class TwitterFollowRepository
      */
     public function getUsersWithoutInfo($take = 1)
     {
-        $userIds = $this->followersFreeTable->where('screen_name', '')->get(['user_id'])->take($take)->toArray();
+        $result = $this->db->select('followers_free', 'user_id', [
+            'screen_name' => '',
+            'LIMIT' => $take
+        ]);
 
-        foreach($userIds as &$userId){
-            $userId = $userId->user_id;
-        }
+        $this->handleDatabaseException();
 
-        return $userIds;
+        return $result;
     }
 
     /**
@@ -94,10 +101,10 @@ class TwitterFollowRepository
      */
     public function saveUserInfos($userInfos)
     {
-        foreach($userInfos as $userInfo){
+        foreach ($userInfos as $userInfo) {
             $userInfo = (array)$userInfo;
 
-            $this->followersFreeTable->where('user_id', $userInfo['id'])->update([
+            $this->db->update('followers_free', [
                 'screen_name' => $userInfo['screen_name'],
                 'name' => $userInfo['name'],
                 'lang' => $userInfo['lang'],
@@ -111,7 +118,9 @@ class TwitterFollowRepository
                 'friends_count' => $userInfo['friends_count'],
                 'favourites_count' => $userInfo['favourites_count'],
                 'statuses_count' => $userInfo['statuses_count'],
-            ]);
+            ], ['user_id' => $userInfo['id_str']]);
+            
+            $this->handleDatabaseException();
         }
     }
 
