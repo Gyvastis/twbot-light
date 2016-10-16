@@ -43,6 +43,28 @@ class CronService
     }
 
     /**
+     * @param Account $account
+     * @return bool
+     */
+    public function shouldFollow($account)
+    {
+        $lastFollowDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronEnumerator::FOLLOW_JOB);
+
+        return !$lastFollowDate || $this->getDateTimeDiffMinutes($lastFollowDate) > $account->getFollowIntervalMinutes();
+    }
+
+    /**
+     * @param Account $account
+     * @return bool
+     */
+    public function shouldUnfriend($account)
+    {
+        $lastUnfriendDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronEnumerator::UNFRIEND_JOB);
+
+        return !$lastUnfriendDate || $this->getDateTimeDiffMinutes($lastUnfriendDate) > $account->getUnfriendIntervalMinutes();
+    }
+
+    /**
      * @param \DateTime $compareTime
      * @param bool|\DateTime $currentTime
      * @return int|float
