@@ -14,8 +14,17 @@ $app->get('/get-followers/{username}', function ($request, $response, $args) {
     $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
 
     $followerIds = $twitterFollowService->getSeedUserFollowers($username);
+    if(empty($followerIds)){
+        return $response->write('No followers fetched');
+    }
 
-    return $response->write(var_export($followerIds));
+    /**
+     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
+     */
+    $twitterFollowRepository = getProvider('twitterFollowRepository');
+    $twitterFollowRepository->addUserIdFreeBulk($followerIds);
+
+    return $response->write('Fetched ' . count($followerIds) . ' from ' . $username);
 });
 
 

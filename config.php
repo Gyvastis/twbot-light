@@ -6,6 +6,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+set_time_limit(100);
+
 define('BASE_DIR', __DIR__ . '/');
 define('CACHE_DIR', BASE_DIR . 'cache/');
 define('DATA_DIR', BASE_DIR . 'data/');

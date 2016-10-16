@@ -36,7 +36,7 @@ class TwitterFollowService
      * @param int $count
      * @return array|null
      */
-    public function getSeedUserFollowers($username, $count = 5000)
+    public function getSeedUserFollowers($username, $count = 1000)
     {
         try{
             $response = $this->getTwitter()->get('followers/ids', array(
