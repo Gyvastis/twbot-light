@@ -3,7 +3,7 @@
 namespace Twbot\Enumerator;
 
 
-final class CronEnumerator
+final class CronJobTypeEnumerator
 {
     const POST_JOB = 'post';
 

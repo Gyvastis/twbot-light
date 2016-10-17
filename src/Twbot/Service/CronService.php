@@ -4,7 +4,7 @@ namespace Twbot\Service;
 
 
 use Twbot\Entity\Account;
-use Twbot\Enumerator\CronEnumerator;
+use Twbot\Enumerator\CronJobTypeEnumerator;
 use Twbot\Repository\CronRepository;
 
 class CronService
@@ -37,7 +37,7 @@ class CronService
      */
     public function shouldPost($account)
     {
-        $lastPostDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronEnumerator::POST_JOB);
+        $lastPostDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronJobTypeEnumerator::POST_JOB);
 
         return !$lastPostDate || $this->getDateTimeDiffMinutes($lastPostDate) > $account->getPostIntervalMinutes();
     }
@@ -48,7 +48,7 @@ class CronService
      */
     public function shouldFollow($account)
     {
-        $lastFollowDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronEnumerator::FOLLOW_JOB);
+        $lastFollowDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronJobTypeEnumerator::FOLLOW_JOB);
 
         return !$lastFollowDate || $this->getDateTimeDiffMinutes($lastFollowDate) > $account->getFollowIntervalMinutes();
     }
@@ -59,7 +59,7 @@ class CronService
      */
     public function shouldUnfriend($account)
     {
-        $lastUnfriendDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronEnumerator::UNFRIEND_JOB);
+        $lastUnfriendDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronJobTypeEnumerator::UNFRIEND_JOB);
 
         return !$lastUnfriendDate || $this->getDateTimeDiffMinutes($lastUnfriendDate) > $account->getUnfriendIntervalMinutes();
     }
