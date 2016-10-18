@@ -32,4 +32,9 @@ class SeederFactory
 
         return !empty($seeders) ? $seeders[array_rand($seeders)] : null;
     }
+
+    public static function getPreferredFollower()
+    {
+        return self::getSeederDataArray()['preferred_follower'];
+    }
 }

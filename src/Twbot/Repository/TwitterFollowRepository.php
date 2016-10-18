@@ -3,6 +3,7 @@
 namespace Twbot\Repository;
 
 use Twbot\Core\Repository;
+use Twbot\Factory\SeederFactory;
 
 class TwitterFollowRepository extends Repository
 {
@@ -91,7 +92,7 @@ class TwitterFollowRepository extends Repository
                 'friends_count' => $userInfo['friends_count'],
                 'favourites_count' => $userInfo['favourites_count'],
                 'statuses_count' => $userInfo['statuses_count'],
-                'retweet_count' => $userInfo['retweet_count'],
+//                'retweet_count' => $userInfo['retweet_count'],
                 'default_profile_image' => $userInfo['default_profile_image'],
             ], ['user_id' => $userInfo['id_str']]);
 
@@ -99,4 +100,24 @@ class TwitterFollowRepository extends Repository
         }
     }
 
+    public function getEligibleToBeFollowed($take = 10)
+    {
+        $preferredFollower = SeederFactory::getPreferredFollower();
+
+        $result = $this->db->select('followers_free', 'followers_free.user_id', [
+            'AND' => [
+                'followers_free.followers_count[>]' => $preferredFollower['min_follower_count'],
+                'followers_free.statuses_count[>]' => $preferredFollower['min_statuses_count'],
+                'followers_free.favourites_count[>]' => $preferredFollower['min_favorites_count'],
+//                'followers_free.retweet_count[>]' => $preferredFollower['min_retweet_count'],
+//                '[>]created_at' => $preferredFollower['min_days_registered'],
+                'followers_free.default_profile_image' => (int)(!(bool)$preferredFollower['has_profile_picture'])
+            ],
+            'LIMIT' => $take
+        ]);
+
+        $this->handleDatabaseException();
+
+        return $result;
+    }
 }

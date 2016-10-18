@@ -20,4 +20,21 @@ $app->get('/test-cron/{username}', function ($request, $response, $args) {
     return $response->write('No need to post');
 });
 
+$app->get('/test-take-follower', function ($request, $response, $args) {
+
+    $account = \Twbot\Factory\AccountFactory::getRandomAccount();
+    $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
+    $logger = \Twbot\Factory\TwitterFactory::getLogger();
+
+    /**
+     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
+     */
+    $twitterFollowRepository = getProvider('twitterFollowRepository');
+    $followerIds = $twitterFollowRepository->getEligibleToBeFollowed();
+
+    var_dump($followerIds);
+
+    return $response->write('No followers :(');
+});
+
 $app->run();

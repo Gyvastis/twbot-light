@@ -1,3 +1,10 @@
 seeder_usernames:
   - "beyonce"
   - "coldplay"
+
+preferred_follower:
+    min_follower_count: 30
+    min_statuses_count: 5
+#    min_retweet_count: 5
+    min_favorites_count: 1
+    has_profile_picture: 1
