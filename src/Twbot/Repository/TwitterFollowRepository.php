@@ -91,6 +91,8 @@ class TwitterFollowRepository extends Repository
                 'friends_count' => $userInfo['friends_count'],
                 'favourites_count' => $userInfo['favourites_count'],
                 'statuses_count' => $userInfo['statuses_count'],
+                'retweet_count' => $userInfo['retweet_count'],
+                'default_profile_image' => $userInfo['default_profile_image'],
             ], ['user_id' => $userInfo['id_str']]);
 
             $this->handleDatabaseException();

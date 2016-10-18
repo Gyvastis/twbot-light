@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.46-0ubuntu0.14.04.2)
 # Database: scotchbox
-# Generation Time: 2016-10-16 20:30:55 +0000
+# Generation Time: 2016-10-18 15:53:55 +0000
 # ************************************************************
 
 
@@ -52,6 +52,8 @@ CREATE TABLE `followers_free` (
   `friends_count` int(11) NOT NULL,
   `favourites_count` int(11) NOT NULL,
   `statuses_count` int(11) NOT NULL,
+  `retweet_count` int(11) NOT NULL,
+  `default_profile_image` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
