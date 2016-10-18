@@ -10,9 +10,14 @@ $app->get('/test-cron/{username}', function ($request, $response, $args) {
 
     $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
     $cronService = new \Twbot\Service\CronService(new \Twbot\Repository\CronRepository());
-    var_dump($cronService->shouldPost($account), $account->getUsername());
 
-    return $response->write('cron test');
+    if($cronService->shouldPost($account)){
+        $cronService->justPosted($account);
+
+        return $response->write('Posted!');
+    }
+
+    return $response->write('No need to post');
 });
 
 $app->run();

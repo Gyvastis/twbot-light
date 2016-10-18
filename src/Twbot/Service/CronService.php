@@ -99,7 +99,7 @@ class CronService
             $currentTime = new \DateTime('now');
         }
 
-        $diffMinutes = $compareTime->getTimestamp() - $currentTime->getTimestamp();
+        $diffMinutes = $currentTime->getTimestamp() - $compareTime->getTimestamp();
         $diffMinutes = $diffMinutes / 60;
         $diffMinutes = round($diffMinutes, 2);
 

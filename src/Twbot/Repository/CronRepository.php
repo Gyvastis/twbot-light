@@ -15,11 +15,35 @@ class CronRepository extends Repository
      */
     public function getJobDate($username, $type)
     {
-        $date = $this->db->get('cron_job', 'created_at', compact('username', 'type'));
+        $date = $this->db->get('cron_job', 'created_at', [
+            'AND' => [
+                'username' => $username,
+                'type' => $type,
+                'is_last' => 1
+            ]
+        ]);
 
         $this->handleDatabaseException();
 
-        return $date ? new \DateTime(strtotime($date)) : null;
+        return $date ? date_create_from_format('Y-m-d H:i:s', $date) : null;
+    }
+
+    /**
+     * @param Account $account
+     * @param string $jobType
+     */
+    protected function resetJobLast($account, $jobType)
+    {
+        $this->db->update('cron_job', [
+            'is_last' => 0
+        ], [
+            'AND' => [
+                'username' => $account->getUsername(),
+                'type' => $jobType
+            ]
+        ]);
+
+        $this->handleDatabaseException();
     }
 
     /**
@@ -28,9 +52,13 @@ class CronRepository extends Repository
      */
     public function addCompletedJob($account, $jobType)
     {
+        $this->resetJobLast($account, $jobType);
+
         $this->db->insert('cron_job', [
             'username' => $account->getUsername(),
-            'type' => $jobType
+            'type' => $jobType,
+            'is_last' => 1,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
 
         $this->handleDatabaseException();
