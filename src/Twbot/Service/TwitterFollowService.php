@@ -49,7 +49,11 @@ class TwitterFollowService
             $this->getLogger()->addCritical($ex->getMessage());
         }
 
-        return isset($response->ids) ? $response->ids : null;
+        if(!isset($response->ids) || empty($response->ids)){
+            $this->getLogger()->addCritical('No followers fetched');
+        }
+
+        return $response->ids;
     }
 
     /**

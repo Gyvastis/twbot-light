@@ -5,8 +5,10 @@ require '../config.php';
 global $container;
 $app = new \Slim\App($container);
 
-$app->get('/get-followers[/{username}]', function ($request, $response, $args) {
+$app->get('/get-followers/{take}[/{username}]', function ($request, $response, $args) {
     $username = $request->getAttribute('username');
+    $take = (int)$request->getAttribute('take');
+
     if(!$username){
         $username = \Twbot\Factory\SeederFactory::getRandomSeederUsername();
     }
@@ -16,10 +18,7 @@ $app->get('/get-followers[/{username}]', function ($request, $response, $args) {
     $logger = \Twbot\Factory\TwitterFactory::getLogger();
     $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
 
-    $followerIds = $twitterFollowService->getSeedUserFollowers($username, 100);
-    if(empty($followerIds)){
-        return $response->write('No followers fetched');
-    }
+    $followerIds = $twitterFollowService->getSeedUserFollowers($username, $take);
 
     /**
      * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
