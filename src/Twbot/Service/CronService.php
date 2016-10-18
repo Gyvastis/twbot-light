@@ -44,6 +44,14 @@ class CronService
 
     /**
      * @param Account $account
+     */
+    public function justPosted($account)
+    {
+        $this->getCronRepository()->addCompletedJob($account, CronJobTypeEnumerator::POST_JOB);
+    }
+
+    /**
+     * @param Account $account
      * @return bool
      */
     public function shouldFollow($account)
@@ -55,6 +63,14 @@ class CronService
 
     /**
      * @param Account $account
+     */
+    public function justFollowed($account)
+    {
+        $this->getCronRepository()->addCompletedJob($account, CronJobTypeEnumerator::FOLLOW_JOB);
+    }
+
+    /**
+     * @param Account $account
      * @return bool
      */
     public function shouldUnfriend($account)
@@ -62,6 +78,14 @@ class CronService
         $lastUnfriendDate = $this->getCronRepository()->getJobDate($account->getUsername(), CronJobTypeEnumerator::UNFRIEND_JOB);
 
         return !$lastUnfriendDate || $this->getDateTimeDiffMinutes($lastUnfriendDate) > $account->getUnfriendIntervalMinutes();
+    }
+
+    /**
+     * @param Account $account
+     */
+    public function justUnfriended($account)
+    {
+        $this->getCronRepository()->addCompletedJob($account, CronJobTypeEnumerator::UNFRIEND_JOB);
     }
 
     /**

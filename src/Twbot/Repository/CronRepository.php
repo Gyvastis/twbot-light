@@ -4,6 +4,7 @@ namespace Twbot\Repository;
 
 
 use Twbot\Core\Repository;
+use Twbot\Entity\Account;
 
 class CronRepository extends Repository
 {
@@ -19,5 +20,19 @@ class CronRepository extends Repository
         $this->handleDatabaseException();
 
         return $date ? new \DateTime(strtotime($date)) : null;
+    }
+
+    /**
+     * @param Account $account
+     * @param string $jobType
+     */
+    public function addCompletedJob($account, $jobType)
+    {
+        $this->db->insert('cron_job', [
+            'username' => $account->getUsername(),
+            'type' => $jobType
+        ]);
+
+        $this->handleDatabaseException();
     }
 }
