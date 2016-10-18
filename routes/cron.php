@@ -32,6 +32,7 @@ $app->get('/test-take-follower', function ($request, $response, $args) {
     $twitterFollowRepository = getProvider('twitterFollowRepository');
     $followerIds = $twitterFollowRepository->getEligibleToBeFollowed();
 
+    var_dump($followerIds);die;
     if(empty($followerIds)){
         $logger->addCritical('No eligible followers :(');
     }

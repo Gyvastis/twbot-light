@@ -104,14 +104,17 @@ class TwitterFollowRepository extends Repository
     {
         $preferredFollower = SeederFactory::getPreferredFollower();
 
-        $result = $this->db->select('followers_free', 'followers_free.user_id', [
+        $result = $this->db->select('followers_free', [
+            '[>]followers_used' => ['user_id' => 'user_id']
+        ], 'followers_free.user_id', [
             'AND' => [
                 'followers_free.followers_count[>]' => $preferredFollower['min_follower_count'],
                 'followers_free.statuses_count[>]' => $preferredFollower['min_statuses_count'],
                 'followers_free.favourites_count[>]' => $preferredFollower['min_favorites_count'],
 //                'followers_free.retweet_count[>]' => $preferredFollower['min_retweet_count'],
 //                '[>]created_at' => $preferredFollower['min_days_registered'],
-                'followers_free.default_profile_image' => (int)(!(bool)$preferredFollower['has_profile_picture'])
+                'followers_free.default_profile_image' => (int)(!(bool)$preferredFollower['has_profile_picture']),
+                'followers_used.username' => null
             ],
             'LIMIT' => $take
         ]);
