@@ -21,23 +21,43 @@ class MessageRepository
      */
     public static function getMessages($categoryName)
     {
-        $messagesCategoryArray = self::getCategoryMessagesArray();
+        $categoryArray = self::getCategoryMessagesArray();
         $messages = [];
 
-        foreach($messagesCategoryArray as $messageCategoryName => $messageTexts){
-            if($messageCategoryName != $categoryName){
-                continue;
-            }
-
-            foreach($messageTexts as $messageText) {
+        foreach($categoryArray as $messageCategoryName => $contentArray){
+            foreach($contentArray['messages'] as $messageText) {
                 $message = new Message();
 
                 $message->setMessage($messageText);
 
                 $messages[] = $message;
             }
+
+            break;
         }
 
         return $messages;
+    }
+
+    /**
+     * @param string $categoryName
+     * @return array
+     */
+    public static function getTags($categoryName)
+    {
+        $categoryArray = self::getCategoryMessagesArray();
+        $tags = [];
+
+        foreach($categoryArray as $messageCategoryName => $contentArray){
+            if($messageCategoryName != $categoryName || !isset($contentArray['tags'])){
+                continue;
+            }
+
+            $tags = $contentArray['tags'];
+
+            break;
+        }
+
+        return $tags;
     }
 }

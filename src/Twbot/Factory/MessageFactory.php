@@ -17,7 +17,7 @@ class MessageFactory
     }
 
     /**
-     * @param $categoryName
+     * @param string $categoryName
      * @return null|\Twbot\Entity\Message
      */
     public static function getRandomMessage($categoryName)
@@ -25,5 +25,26 @@ class MessageFactory
         $messages = MessageRepository::getMessages($categoryName);
 
         return !empty($messages) ? $messages[array_rand($messages)] : null;
+    }
+
+    /**
+     * @param string s$categoryName
+     * @param int $tagCount
+     * @return null|\Twbot\Entity\Message
+     */
+    public static function getRandomMessageWithTags($categoryName, $tagCount = 5)
+    {
+        $randomMessage = self::getRandomMessage($categoryName);
+
+        $tags = MessageRepository::getTags($categoryName);
+
+        if(!empty($tags)){
+            shuffle($tags);
+
+            $tags = array_slice($tags, 0, $tagCount);
+            $randomMessage->setTags($tags);
+        }
+
+        return $randomMessage;
     }
 }

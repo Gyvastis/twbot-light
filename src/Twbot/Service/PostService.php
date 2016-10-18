@@ -58,7 +58,7 @@ class PostService
     public function send()
     {
         $this->getTwitter()->post("statuses/update", [
-            "status" => $this->getMessage()->getMessage(),
+            "status" => (string)$this->getMessage(),
             'media_ids' => $this->uploadMedia()
         ]);
 
