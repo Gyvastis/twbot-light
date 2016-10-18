@@ -32,9 +32,17 @@ $app->get('/test-take-follower', function ($request, $response, $args) {
     $twitterFollowRepository = getProvider('twitterFollowRepository');
     $followerIds = $twitterFollowRepository->getEligibleToBeFollowed();
 
-    var_dump($followerIds);
+    if(empty($followerIds)){
+        $logger->addCritical('No eligible followers :(');
+    }
 
-    return $response->write('No followers :(');
+    $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
+    foreach($followerIds as $followerId) {
+        $twitterFollowService->followByUserId($followerId);
+        $twitterFollowRepository->addUserIdUsed($followerId);
+    }
+
+    return $response->write('Followed ' . count($followerIds) . ' by ' . $account->getUsername());
 });
 
 $app->run();
