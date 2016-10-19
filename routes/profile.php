@@ -29,7 +29,7 @@ $app->group('/image-rotate', function () {
         $logger = \Twbot\Factory\TwitterFactory::getLogger();
 
         $twitterUploadService = new \Twbot\Service\TwitterUploadService($twitter, $logger);
-        $twitterUploadService->uploadProfileImage($image);
+        $twitterUploadService->uploadBackgroundImage($image);
 
         return $response->write("Background $username Rotate!");
     });
