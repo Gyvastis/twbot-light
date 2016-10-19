@@ -5,12 +5,6 @@ require '../config.php';
 global $container;
 $app = new \Slim\App($container);
 
-$app->get('/', function ($request, $response, $args) {
-//    $this->logger->addInfo("Poster Home");
-
-    return $response->write("Post Job!");
-});
-
 $app->get('/{username}', function ($request, $response, $args) {
     $username = $request->getAttribute('username');
     //check param excaption

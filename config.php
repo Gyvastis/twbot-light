@@ -22,4 +22,6 @@ define('SEEDERS_DATA_FILE', DATA_DIR . 'seeders.yml');
 
 define('ROUTER_CACHE_FILE', CACHE_DIR . 'router');
 
+define('TWBOT_URL', 'http://' . $_SERVER['SERVER_NAME']);
+
 require "container.php";
