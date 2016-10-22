@@ -40,7 +40,7 @@ class Message
         $tagString = '';
 
         foreach($tags as $tag){
-            $tagString .= '#' . $tag;
+            $tagString .= ' #' . $tag;
         }
 
         return $this->getMessage() . ' ' . $tagString;
