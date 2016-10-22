@@ -1,6 +1,7 @@
 RewriteEngine on
 RewriteCond %{REQUEST_URI} !/routes
 RewriteCond %{REQUEST_URI} !/public
+RewriteCond %{REQUEST_URI} !/external
 RewriteRule ^(.*)$ /public/error/404.html
 
 #RewriteCond %{REQUEST_FILENAME} !-f
