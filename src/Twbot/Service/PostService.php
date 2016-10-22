@@ -63,7 +63,7 @@ class PostService
         ]);
 
         if (!$this->getTwitter()->getLastHttpCode() == 200) {
-            //handle exception
+            $this->getLogger()->addCritical('Failed to post to ' . $this->getAccount()->getUsername() . ' :(');
         }
 
         // log image used, media dir, message, ..., generate tracker id?
