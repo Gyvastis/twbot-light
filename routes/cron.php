@@ -31,7 +31,7 @@ $app->get('/post', function ($request, $response, $args) use ($app) {
 
     $cronService->justPosted($account);
 
-    return $response->write($response);
+    return $response->write($subRequestResponse);
 });
 
 $app->get('/fetch-followers/{take}', function ($request, $response, $args) {
@@ -39,8 +39,8 @@ $app->get('/fetch-followers/{take}', function ($request, $response, $args) {
     $take = mt_rand($take / 2, $take);
     $take = round($take);
 
-    $username = \Twbot\Factory\SeederFactory::getRandomSeederUsername();
-    $subRequestUrl = TWBOT_URL . "/routes/follow.php/fetch-followers/$username/$take";
+    $seederUsername = \Twbot\Factory\SeederFactory::getRandomSeederUsername();
+    $subRequestUrl = TWBOT_URL . "/routes/follow.php/fetch-followers/$seederUsername/$take";
 
     $subRequestResponse = @file_get_contents($subRequestUrl);
 
@@ -48,7 +48,23 @@ $app->get('/fetch-followers/{take}', function ($request, $response, $args) {
         return $response->write('Failed to fetch followers :(');
     }
 
-    return $response->write($response);
+    return $response->write($subRequestResponse);
+});
+
+$app->get('/fetch-followers-details/{take}', function ($request, $response, $args) {
+    $take = (int)$request->getAttribute('take');
+    $take = mt_rand($take / 2, $take);
+    $take = round($take);
+
+    $subRequestUrl = TWBOT_URL . "/routes/follow.php/fetch-followers-details/$take";
+
+    $subRequestResponse = @file_get_contents($subRequestUrl);
+
+    if(!$subRequestResponse){
+        return $response->write('Failed to fetch followers info :(');
+    }
+
+    return $response->write($subRequestResponse);
 });
 
 $app->run();
