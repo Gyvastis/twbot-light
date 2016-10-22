@@ -5,61 +5,50 @@ require '../config.php';
 global $container;
 $app = new \Slim\App($container);
 
-$app->get('/post/{username}', function ($request, $response, $args) use ($app) {
-    $username = $request->getAttribute('username');
-
-    $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
-
-    if(!$account){
-        return $response->write('Account not found :(');
-    }
-
+$app->get('/post', function ($request, $response, $args) use ($app) {
+    $account = null;
+    $accounts = \Twbot\Repository\AccountRepository::getAccounts();
     $cronService = new \Twbot\Service\CronService(new \Twbot\Repository\CronRepository());
 
-    if($cronService->shouldPost($account)){
+    foreach($accounts as $uncheckedAccount){
+        if($cronService->shouldPost($uncheckedAccount)){
+            $account = $uncheckedAccount;
 
-        $subRequestResponse = @file_get_contents(TWBOT_URL . "/routes/post.php/$username");
-
-        if(!$subRequestResponse){
-            return $response->write('Failed to post :(');
+            break;
         }
-
-        $cronService->justPosted($account);
-
-        return $response->write($response);
     }
 
-    return $response->write('No need to post');
+    if(!$account){
+        return $response->write('No accounts needs posting :(');
+    }
+
+    $subRequestUrl = TWBOT_URL . "/routes/post.php/" . $account->getUsername();
+    $subRequestResponse = @file_get_contents($subRequestUrl);
+
+    if(!$subRequestResponse){
+        return $response->write('Failed to post :(');
+    }
+
+    $cronService->justPosted($account);
+
+    return $response->write($response);
 });
 
-$app->get('/test', function ($request, $response, $args) {
-    return $response->write('test');
-});
+$app->get('/fetch-followers/{take}', function ($request, $response, $args) {
+    $take = (int)$request->getAttribute('take');
+    $take = mt_rand($take / 2, $take);
+    $take = round($take);
 
-$app->get('/test-take-follower', function ($request, $response, $args) {
+    $username = \Twbot\Factory\SeederFactory::getRandomSeederUsername();
+    $subRequestUrl = TWBOT_URL . "/routes/follow.php/fetch-followers/$username/$take";
 
-    $account = \Twbot\Factory\AccountFactory::getRandomAccount();
-    $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
-    $logger = \Twbot\Factory\TwitterFactory::getLogger();
+    $subRequestResponse = @file_get_contents($subRequestUrl);
 
-    /**
-     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
-     */
-    $twitterFollowRepository = getProvider('twitterFollowRepository');
-    $followerIds = $twitterFollowRepository->getEligibleToBeFollowed();
-
-    var_dump($followerIds);die;
-    if(empty($followerIds)){
-        $logger->addCritical('No eligible followers :(');
+    if(!$subRequestResponse){
+        return $response->write('Failed to fetch followers :(');
     }
 
-    $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
-    foreach($followerIds as $followerId) {
-        $twitterFollowService->followByUserId($followerId);
-        $twitterFollowRepository->addUserIdUsed($followerId);
-    }
-
-    return $response->write('Followed ' . count($followerIds) . ' by ' . $account->getUsername());
+    return $response->write($response);
 });
 
 $app->run();

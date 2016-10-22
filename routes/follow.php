@@ -5,15 +5,11 @@ require '../config.php';
 global $container;
 $app = new \Slim\App($container);
 
-$app->get('/get-followers/{take}[/{username}]', function ($request, $response, $args) {
+$app->get('/fetch-followers/{username}/{take}', function ($request, $response, $args) {
     $username = $request->getAttribute('username');
     $take = (int)$request->getAttribute('take');
 
-    if(!$username){
-        $username = \Twbot\Factory\SeederFactory::getRandomSeederUsername();
-    }
-
-    $account = \Twbot\Factory\AccountFactory::getRandomAccount();
+    $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
     $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
     $logger = \Twbot\Factory\TwitterFactory::getLogger();
     $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
@@ -29,7 +25,7 @@ $app->get('/get-followers/{take}[/{username}]', function ($request, $response, $
     return $response->write('Fetched ' . count($followerIds) . ' from ' . $username);
 });
 
-$app->get('/get-follower-info', function ($request, $response, $args) {
+$app->get('/fetch-followers-details', function ($request, $response, $args) {
     /**
      * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
      */
@@ -46,17 +42,6 @@ $app->get('/get-follower-info', function ($request, $response, $args) {
     $twitterFollowRepository->saveUserInfos($userInfos);
 
     return $response->write('Follower info fetched for ' . count($userIds) . ' users');
-});
-
-
-$app->get('/test-follow-used', function ($request, $response, $args) {
-    /**
-     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
-     */
-    $twitterFollowRepository = getProvider('twitterFollowRepository');
-
-    $twitterFollowRepository->addUserIdUsed('test12', '1231231');
-    // prior following someone validate with seed user profile options, whether the user is of value to us
 });
 
 $app->run();
