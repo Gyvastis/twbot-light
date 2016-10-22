@@ -5,6 +5,33 @@ require '../config.php';
 global $container;
 $app = new \Slim\App($container);
 
+$app->get('/follow/{username}/{take}', function ($request, $response, $args) {
+    $username = $request->getAttribute('username');
+    $take = (int)$request->getAttribute('take');
+
+    $account = \Twbot\Factory\AccountFactory::getRandomAccount();
+    $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
+    $logger = \Twbot\Factory\TwitterFactory::getLogger();
+    $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
+    /**
+     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
+     */
+    $twitterFollowRepository = getProvider('twitterFollowRepository');
+
+    $followerIds = $twitterFollowRepository->getEligibleToBeFollowed($take);
+
+    if(!$followerIds){
+        $logger->addCritical('Nothing left to follow :(');
+    }
+
+    foreach($followerIds as $followerId) {
+        $twitterFollowService->followByUserId($followerId);
+        $twitterFollowRepository->addUserIdUsed($account->getUsername(), $followerId);
+    }
+
+    return $response->write('Followed ' . count($followerIds) . ' for ' . $username);
+});
+
 $app->get('/fetch-followers/{seeder-username}/{take}', function ($request, $response, $args) {
     $seederUsername = $request->getAttribute('seeder-username');
     $take = (int)$request->getAttribute('take');
@@ -20,9 +47,9 @@ $app->get('/fetch-followers/{seeder-username}/{take}', function ($request, $resp
      * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
      */
     $twitterFollowRepository = getProvider('twitterFollowRepository');
-    $twitterFollowRepository->addUserIdFreeBulk($username, $followerIds);
+    $twitterFollowRepository->addUserIdFreeBulk($seederUsername, $followerIds);
 
-    return $response->write('Fetched ' . count($followerIds) . ' from ' . $username);
+    return $response->write('Fetched ' . count($followerIds) . ' from ' . $seederUsername);
 });
 
 $app->get('/fetch-followers-details/{take}', function ($request, $response, $args) {

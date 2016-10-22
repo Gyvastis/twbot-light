@@ -33,6 +33,16 @@ class TwitterFollowRepository extends Repository
     }
 
     /**
+     * @param string $user_id
+     */
+    public function removeUserId($user_id)
+    {
+        $this->db->delete('followers_used', compact('user_id'));
+
+        $this->handleDatabaseException();
+    }
+
+    /**
      * @param string $seeder_username
      * @param string $user_ids
      */

@@ -67,6 +67,39 @@ $app->get('/fetch-followers-details/{take}', function ($request, $response, $arg
     return $response->write($subRequestResponse);
 });
 
+$app->get('/follow', function ($request, $response, $args) {
+    $account = null;
+    $accounts = \Twbot\Repository\AccountRepository::getAccounts();
+    $cronService = new \Twbot\Service\CronService(new \Twbot\Repository\CronRepository());
+
+    foreach($accounts as $uncheckedAccount){
+        if($cronService->shouldFollow($uncheckedAccount)){
+            $account = $uncheckedAccount;
+
+            break;
+        }
+    }
+
+    if(!$account){
+        return $response->write('No accounts needs following :(');
+    }
+
+    $take = $account->getFollowAmountMax();
+    $take = mt_rand($take / 2, $take);
+    $take = round($take);
+
+    $subRequestUrl = TWBOT_URL . "/routes/follow.php/follow/" . $account->getUsername() . "/$take";
+    $subRequestResponse = @file_get_contents($subRequestUrl);
+
+    if(!$subRequestResponse){
+        return $response->write('Failed to follow :(');
+    }
+
+    $cronService->justFollowed($account);
+
+    return $response->write($subRequestResponse);
+});
+
 $app->get('/unfriend-followers', function ($request, $response, $args) {
     $account = null;
     $accounts = \Twbot\Repository\AccountRepository::getAccounts();
@@ -81,7 +114,7 @@ $app->get('/unfriend-followers', function ($request, $response, $args) {
     }
 
     if(!$account){
-        return $response->write('No accounts needs posting :(');
+        return $response->write('No accounts needs unfriending :(');
     }
 
     $take = $account->getUnfriendAmountMax();
@@ -92,7 +125,7 @@ $app->get('/unfriend-followers', function ($request, $response, $args) {
     $subRequestResponse = @file_get_contents($subRequestUrl);
 
     if(!$subRequestResponse){
-        return $response->write('Failed to post :(');
+        return $response->write('Failed to unfriend :(');
     }
 
     $cronService->justUnfriended($account);
