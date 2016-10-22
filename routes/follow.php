@@ -46,4 +46,29 @@ $app->get('/fetch-followers-details/{take}', function ($request, $response, $arg
     return $response->write('Follower info fetched for ' . count($userIds) . ' users');
 });
 
+$app->get('/unfriend-followers/{username}/{take}', function ($request, $response, $args) {
+    $username = $request->getAttribute('username');
+    $take = (int)$request->getAttribute('take');
+
+    $account = \Twbot\Repository\AccountRepository::getAccountByUsername($username);
+    $twitter = \Twbot\Factory\TwitterFactory::getTwitterOAuth($account);
+    $logger = \Twbot\Factory\TwitterFactory::getLogger();
+    $twitterFollowService = new \Twbot\Service\TwitterFollowService($twitter, $logger);
+    /**
+     * @var \Twbot\Repository\TwitterFollowRepository $twitterFollowRepository
+     */
+    $twitterFollowRepository = getProvider('twitterFollowRepository');
+
+    $followerIds = $twitterFollowService->getSeedUserFollowers($username, 1000);
+    shuffle($followerIds);
+    $followerIds = array_slice($followerIds, 1, $take);
+
+    foreach($followerIds as $followerId) {
+        $twitterFollowService->unfriendByUserId($followerId);
+        $twitterFollowRepository->removeUserId($followerId);
+    }
+
+    return $response->write('Unfriended ' . count($followerIds) . ' users');
+});
+
 $app->run();
