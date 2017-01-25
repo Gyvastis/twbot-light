@@ -9,3 +9,6 @@
 /media/.gitkeep
 /logs/*
 /logs/.gitkeep
+
+.DS_Store
+container.php

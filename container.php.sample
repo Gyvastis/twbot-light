@@ -4,12 +4,10 @@ global $container;
 
 $container = new \Slim\Container([
     'settings' => [
-//        'routerCacheFile' => ROUTER_CACHE_FILE,
-//        'determineRouteBeforeAppMiddleware' => false,
         'displayErrorDetails' => true,
         'db' => [
             'database_type' => 'mysql',
-            'database_name' => 'scotchbox',
+            'database_name' => 'name',
             'server' => 'localhost',
             'username' => 'root',
             'password' => 'root',

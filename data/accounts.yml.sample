@@ -2,8 +2,8 @@
   username: ""
   password: ""
   phone: ""
-  access-key: ""
   access-token: ""
+  access-secret: ""
   consumer-key: ""
   consumer-token: ""
   disabled: 0
@@ -20,8 +20,8 @@
   username: ""
   password: ""
   phone: ""
-  access-key: ""
   access-token: ""
+  access-secret: ""
   consumer-key: ""
   consumer-token: ""
   disabled: 0
